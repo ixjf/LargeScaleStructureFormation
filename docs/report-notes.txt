@@ -1,0 +1,6 @@
+(AVALIAÇÃO) 6. halo mass function for each recorded time (settings for halo finding?), most massive halo for each recorded time (velocities, for example; but i didn't store velocities in the snapshot file!) - verifying the resolution and accuracy; matter correlation function - confirming what i see from visual comparison
+(AVALIAÇÃO) does the total energy of the system stay more or less conserved? what are the timesteps required by the usual timestep criteria and what timestep did I use? what can we learn from the results of this random simulation? can it even say anything at all? it does not replicate any real system, they're random initial conditions.
+
+
+
+Friendmann equation - came from Wikipedia for Hubble parameter/Friedmann equations/Scale factor

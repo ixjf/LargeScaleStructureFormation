@@ -1,0 +1,58 @@
+3. write nbody dmonly sim (box?, include softening?, comoving coordinates, leapfrog integration KDK/DKD, per-particle timesteps (probably), particle-particle force computation on the GPU) - https://en.wikipedia.org/wiki/Periodic_boundary_conditions for box
+
+note: we _can_ have per-particle time steps. I shouldn't store every step in memory. choose fixed steps to save at. then you can force all particles to be calculated at only those steps, and otherwise skip steps if unnecessary.
+
+
+- cite GADGET code paper
+- cite CUDA.jl pkg
+- cite sebenta
+
+find real world initial conditions?
+
+
+maybe don't compare with hydrodynamics simulation after all? unless we're using the exact same code, I think it might not make much sense? because any deviations could be due to a bug in my code rather than an actual difference between the models. focus on the different methods to achieve a simulation of large scale structure formation with dark matter only, and compare it with the result from GADGET4. See how an "exact" (except for the softening, if there's no other option) particle-particle method on the GPU compares time-wise and (ESPECIALLY!) accuracy-wise to GADGET4's TreePM code running on the 12 CPU threads. Surely there's some article that talks about all this. Professor would give 20% extra if we confirmed the results on a paper, so here's a good chance to do that. https://arxiv.org/pdf/1811.05903.pdf Maybe running on GPU will allow me to run a larger simulation and compare against the results of some existing paper... but maybe we begin with a particle-particle method and then improve.
+
+"Accuracy of a cold dark matter-only simulation of large scale structure formation": matter power spectrum, halos (FoF, subfind, ...) - mass and whatever, matter correlation function, halo density profile (if there's any halo), halo velocity profile
+
+
+how accurate is KDK leapfrog integration? Do I ACTUALLY need the sympletic property? i guess not really, but the fact that it's such a simple algorithm and it has those properties makes it a no-brainer. "PREDICTOR-CORRECTOR FORM"
+
+
+--
+Maybe once all is done, I could explore whether Rust is a better choice performance and bug-wise?
+
+
+
+
+1. (DONE) read initial ic, take in output times
+2. (DONE for particle mesh) setup comoving coordinates (important because distance between matter will increase over time, also velocities change)
+3. (DONE) start loop: force calculation + fixed softening: so particles are not at the same timestep. what do I do? assume that their current position is approx the same as it would be on the same timestep?
+4. (DONE) leapfrog integration of particle motion with the typical kinematic timestep criterion
+5. (DONE, but not sure if it's the best idea) loop: advance until all particles have reached the final time.
+5. (DONE) output at fixed times
+6. (DONE) output to HDF5 in same format as GADGET4 so we can visualize output with gadgetviewer - or maybe not. plots.jl with plotly seems to work just fine! nope, way too slow
+7. (DONE for particle mesh) PBC
+8. (DONE) Replace the particle-particle method with Barnes-Hut tree method: need to do force computation with barnes-hut tree.
+9. Fix per-particle timesteps stuff: how do I synchronize particles to same timesteps? how do i calculate forces for particles that aren't synchronized? code in nbody.cc & paper should provide the answer. particles are synchronized at the largest time steps. OKAY. Wait - what if I use a fixed timestep scheme? Does it affect the performance much for large scale structure formation? Let's try it out. How many timesteps (which criterion to use? local density? doesn't the paper say it doesn't make a difference for structure formation?)? Global adaptive time step or fixed time step? How does it compare to an adaptive time step scheme? How can I check if such a scheme would be needed? (Check how many particles needed a low timestep with respect to the mean, or something like that?) If trying an adaptive time step scheme, plot the energy of the system over time. Seems individual time steps might actually be beneficial even for large scale structure formation
+10. (DONE) See about Ewald summation for getting periodic boundary conditions working. Or implement TreePM? We implement Ewald summation. Later on, we may try TreePM. Nope, I think TreePM is the way to go - we move to Poisson's equation and dealing with potential/density, and we solve the problem of periodic boundary conditions at the same time. Win-win. Setting up comoving coordinates is also easier this way, because everywhere this is talked about, Poisson's equation and potential is used. why does PM solve periodic boundary conditions problem?
+11. Add PBC? and comoving coordinates to tree method. Join with particle mesh method for higher resolution.
+12. See about optimization for tree code with the opening criterion thingy.
+13. errors in all algorithms? how are they characterized? what tests can I make? validate choices of algorithm and parameters used.
+14. other notes inside code.
+15. in alternative to the tree code, there's also the adaptive mesh refinment method (particle-mesh but the mesh is finer in denser regions). though i had read these had major drawbacks, no? (AP3M?)
+16. do i get any major numerical errors for using 32bit floats?
+17. FIRST THING WHEN I START WORKING ON THE CODE AGAIN IS FIGURE OUT HOW TO DO ALL THE DERIVATIONS MYSELF. SO MUCH PAIN TRYING TO UNDERSTAND WHAT IS WHAT.
+18. could the choice of using CIC density assignment also affect the result?
+19. find accurate wmap initial conditions.
+20. then also figure out why the results i obtained are not quite the same. maybe still some different parameters? bugs? timesteps? analyze the matter power spectrum for other z, see how it evolves - maybe it'll give you a hint.
+21. what effect does force softening have on my simulations?
+22. what is "dynamical time"?
+23. interesting thing: GADGET-4 uses integers instead of floats (because of the accuracy problem; and because accuracy is relative for floats) - for a 32bit int, that allows 2*10^-10 resolution (1/maxint32). However, on a GPU, this limits performance greatly, since int32 operations are done on a subset of semi-dedicated CUDA cores (so you won't be using all the cores available at any time).
+24. "For production code and long-term software development in Julia, you are strongly urged to write precision-independent code - that is, your functions should determine their working precision from the precision of their arguments, so that by simply passing data in a different precision they compute in that precision."
+25. My code definitely needs some optimizing. Memory wise (using what, 500MB? HOW? it should be like 10-15 MB for 64^3 particles, no?), performance wise (2x as slow as GADGET on CPU). Also, for large simulations, I'll need to load data from memory. Keeping it all in memory will not work very well (I mean, up to 512^3... that's maybe 6GB of vram used). Also cpu/gpu hybrid?
+
+(SORTA DONE) THEN translate to GPU. Perhaps to counteract the impact of fixed time step, we could do a CPU-GPU hybrid? If there's any benefit to that as well. ArrayFire, others.
+THEN try adaptive softening
+THEN see what else can be done
+
+GTX 1060 - 10 streaming multiprocessors, 128 cores per SM, 2048*SM = max theoretical threads at same time.

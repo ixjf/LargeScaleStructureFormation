@@ -1,0 +1,9 @@
+https://physics.stackexchange.com/questions/196383/how-can-i-add-dark-matter-to-my-n-body-simulation
+http://www.scholarpedia.org/article/N-body_simulations_(gravitational)
+ver figura que o professor mandou (Sol - email)
+https://en.wikipedia.org/wiki/Galaxy_rotation_curve (and this: https://arxiv.org/abs/1810.04445 - really interesting!)
+
+
+
+Idea: Build a simple dark matter-only (meaning, particles that interact only due to gravitational attraction) n-body simulation of the formation of a galaxy and compare it to an existing more complete model (i.e. that includes hydrodynamics).
+Ver Dark_matter_with_n-body_numerical_simulations.pdf

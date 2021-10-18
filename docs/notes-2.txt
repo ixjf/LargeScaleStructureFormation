@@ -1,0 +1,130 @@
+2. https://www.sciencedirect.com/science/article/pii/S2212686412000064
+
+3. why do "unphysical hard scatterings" happen? why do we need softening? i know it's because we're thinking of it as a discrete space/time field, but what exactly about it creates the problem? the fact that we're computing forces at not fine enough steps. if we computed forces at increasingly small steps, everything would be fine, but then it would take infinite time :)
+
+4. https://www.mpi-hd.mpg.de/lin/events/isapp2011/pages/lectures/Springel-1_2.pdf
+
+5. https://arxiv.org/pdf/astro-ph/9912541.pdf
+
+6. Barnes-Hut tree method, or multipole expansion. http://web.pd.astro.it/mapelli/Nbody3.pdf (explica os métodos que se podem usar, exceto Tree-Particle-Mesh).
+
+7. Leapfrog integration (acho que está descrito na sebenta também?)
+
+8. http://www.cs.cmu.edu/afs/cs/academic/class/15850c-s96/www/nbody.html (descrições mais detalhadas dos métodos de integração)
+
+9. https://cds.cern.ch/record/603890/files/0302065.pdf
+
+10. http://research.iac.es/congreso/cosmo2017//media/talks/DAY3_Raul_Angulo.pdf
+
+11. comoving coordinates? what's this?
+
+12. FoF finder algorithm (or Spherical Overdensities, or Iso-density surfaces) - https://www.monash.edu/__data/assets/pdf_file/0012/476769/anita_gadget_slides.pdf has references to papers I can compare results against
+
+13. Effects of different methods for computing initial conditions: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.754.5705&rep=rep1&type=pdf
+
+14. https://people.ast.cam.ac.uk/~puchwein/NumCosmo_lect_2016/NumericalCosmology6.pdf
+
+15. Ewald summation
+
+16. http://people.virginia.edu/~lz2n/mse627/notes/Boundary.pdf - periodic boundary conditions are the most adequate for a cosmo simulation,
+https://en.wikipedia.org/wiki/Periodic_boundary_conditions,
+https://iopscience.iop.org/article/10.1209/0295-5075/123/10003/meta
+
+17. https://cds.cern.ch/record/335403/files/9710043.pdf - leapfrog vs runge kutta, nice graph that shows how runge kutta methods fail tremendously
+
+18. "The small size of this box means it does not accurately represent large scale structure, but it does
+guarantee significant non-linear evolution and a stringent test for the time integrator." - so how large should the box be?
+
+19. https://core.ac.uk/download/pdf/25196545.pdf - idk, might be useful
+
+20. https://www.researchgate.net/publication/225368528_TreePM_A_code_for_Cosmological_N-Body_Simulations
+
+21. https://arxiv.org/pdf/astro-ph/0212129.pdf
+
+22. https://en.wikipedia.org/wiki/Leapfrog_integration#cite_note-3 - variable step size destabilizes leapfrog; one must one KDK leapfrog
+
+23. https://iss.oden.utexas.edu/Publications/Papers/burtscher11.pdf - mentions some optimizations that could still be done down the way that aren't implemented in the paper. Also see: https://dl.acm.org/doi/pdf/10.1145/3330345.3330348
+
+24. https://ui.adsabs.harvard.edu/abs/2019MNRAS.487.1227Z/abstract - optimal gravitational softening length
+
+25. https://academic.oup.com/mnras/article/417/4/2846/1097816 - adaptive gravitational softening
+
+26. https://arxiv.org/pdf/1811.05903.pdf - GPU recreation of Millenium Run simulation in 4 days (versus 28)
+
+27. https://ir.vanderbilt.edu/bitstream/handle/1803/5192/ben_w_thesis.pdf?sequence=1&isAllowed=y - shows some graphs and talks about algorithms for checking results of simulation
+
+28. https://ned.ipac.caltech.edu/level5/March02/Bertschinger/Bert1.html - comoving coordinates
+
+29. https://www.cs.princeton.edu/courses/archive/fall03/cs126/assignments/barnes-hut.html
+
+30. GADGET4 paper - interesting stuff; sympletic leapfrog; explains why periodic boundary conditions are a problem with the barnes-hut tree method (potential is an infinite sum, hence why using the ewald sum - a rapidly convergent sum - is necessary)
+
+31. https://arxiv.org/pdf/astro-ph/0604371.pdf, http://articles.adsabs.harvard.edu//full/1989ApJS...70..419H/0000428.000.html - more about time steps; describes how to implement an adaptive per-particle time-stepping scheme that allows synchronization at 'full' timesteps
+
+32. https://arxiv.org/pdf/1707.09069.pdf - i.e. time reversible timestepping scheme is kinda pointless for large scale structure formation?
+
+33. https://academic.oup.com/mnras/article/376/1/273/973561 - better time stepping scheme that isn't really better for large scale structure formation
+
+34. https://arxiv.org/pdf/astro-ph/9911025.pdf - treepm code
+
+35. https://arxiv.org/pdf/0802.3215.pdf - optimizing force computations in a tree code
+
+36. https://cds.cern.ch/record/413137/files/9912541.pdf - TPM is still better than particle mesh and stuff
+
+37. https://cds.cern.ch/record/406323/files/9911025.pdf - describes in more detail the optimization for tree code (with the opening criterion and all)
+
+38. https://arxiv.org/pdf/1909.07976.pdf - more stuff to check the accuracy of the dark matter simulation
+
+39. https://academic.oup.com/mnras/article/446/1/677/1318070 - evolving the system with newtonian physics and comoving coordinates is okay, no need to invoke general relativity
+
+40. http://popia.ft.uam.es/aknebe/page3/files/ComputationalCosmology/07TreeCodes.pdf - adding ewald force in practice
+
+41. CONCEPT code - https://users-phys.au.dk/~jmd/github/concept/masters_thesis.pdf
+
+42. https://academic.oup.com/mnras/article/396/4/2211/1028946#91705350 - adaptive softening and whatever
+
+43. https://lgarrison.github.io/Computational_Modeling_of_Large_Scale_Structure.pdf The ABACUS code thesis
+
+44. https://en.wikipedia.org/wiki/Einstein%E2%80%93de_Sitter_universe - expanding universe
+
+45. https://arxiv.org/pdf/astro-ph/0302065.pdf - TreePM
+
+46. https://astro.uchicago.edu/~andrey/talks/PM/pm_slides.pdf - somewhat comprehensive step-by-step explanation of particle-mesh technique; http://cds.cern.ch/record/341761/files/9712217.pdf - original article; not as detailed but contains code - code is somewhere in here: http://astronomy.nmsu.edu/aklypin/CosSim/PM/ ; http://ta.twi.tudelft.nl/dv/users/lemmens/MThesis.TTH/chapter4.html - this one here is also useful
+
+47. https://core.ac.uk/download/pdf/82127945.pdf - optimizing particle-mesh algorithm on GPUs (particle-based approach is fastest for single spread per config)
+
+48. http://research.iac.es/congreso/isapp2012/media/Longair-lectures/Longair2.pdf - seems to explain where comoving coordinates stuff comes from
+
+49. https://web.archive.org/web/20131205193820/http://astro.nmsu.edu/~aklypin/PM/pmcode/node2.html#SECTION00020000000000000000, http://cds.cern.ch/record/341761/files/9712217.pdf
+
+50. http://articles.adsabs.harvard.edu//full/1989ApJS...70..419H/0000428.000.html - adaptive timesteps and stuff
+
+51. https://dl.acm.org/doi/pdf/10.1145/3330345.3330348 - efficient tree method on gpu
+
+52. https://docs.julialang.org/en/v1/manual/performance-tips/ - optimizing Julia code
+
+53. https://www-n.oca.eu/ohahn/courses/cosmological_simulations.pdf - a lot of interesting info here
+
+54. https://people.maths.ox.ac.uk/gilesm/cuda/lecs/lecs.pdf - lectures on CUDA, fun stuff, not for this project tho; https://www.nvidia.com/en-us/about-nvidia/webinar-portal/ - webinars on CUDA
+
+55. https://developer.nvidia.com/blog/how-access-global-memory-efficiently-cuda-c-kernels/ - efficient global memory access cuda
+
+56. https://indico.cern.ch/event/688110/contributions/2834489/attachments/1644377/2627628/exercise_nbody.pdf - interesting guide for analyzing the results from the simulation
+
+57. https://arxiv.org/pdf/astro-ph/0202512.pdf - what is this? O(N) algorithm? what?
+
+58. http://www.astronomy.ohio-state.edu/~dhw/A873/notes8.pdf, http://cds.cern.ch/record/484698/files/0101009.pdf, https://www.haus-der-astronomie.de/3406991/lecture-notes-glover.pdf, https://sites.astro.caltech.edu/~george/ay127/kamionkowski-perturbations-notes.pdf - density perturbations, eq for gravitational potential with overdensity rather than total density
+
+59. https://wwwmpa.mpa-garching.mpg.de/~komatsu/lecturenotes/Linda_Blot_on_NumericalMethods.pdf - interesting stuff about particle mesh method that I was not aware of. review when trying to do all derivations.
+
+60. https://www.ics.uzh.ch/~teyssier/comp_astro_lectures/compastro_lecture1.pdf
+
+61. https://cds.cern.ch/record/603890/files/0302065.pdf - different timestep criteria
+
+62. https://www.imsc.res.in/~kabru/parapp/nbody.pdf - treepm comprehensive slides
+
+63. https://arxiv.org/pdf/1707.03397.pdf - paper describing results from IllustriusTNG simulations, might give me ideas for own tests
+
+64. https://hal.inria.fr/inria-00331382/document - Peano-Hilbert domain decomposition, might be necessary? idk, haven't understood how julia distributes work across nodes
+
+65. https://academic.oup.com/mnras/article/485/3/3370/5371170 - could use this for 1st part of my project. "Write an nbody code and validate results". 2nd part - "what do the results tell me about the underlying physics? what's happening?"
